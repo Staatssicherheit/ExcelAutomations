@@ -1,12 +1,10 @@
 Sub changingPWonRecord()
 
 Dim driver As WebDriver
-Dim firstLineChcker As Selenium.WebElement
 
 Dim loginURL As String
 Dim modifyURL As String
 
-''{URL} 변경해서 써야함
 loginURL = "{URL}"
 modifyURL = "{URL}"
 ''https://{URL} 1번서버 Primary
@@ -54,75 +52,75 @@ driver.FindElementByXPath("//*[@id='labelDiv']/input").SendKeys useridInput
 driver.FindElementByXPath("//*[@id='outer_search']/div[2]/div[2]/button").Click
 
 Dim imageXPath As String
+Dim firstlineCheckPath As String
 imageXPath = "//img[contains(@src,'ico_unlock.png')]"
+firstlineCheckPath = "//*[@id='grid']/div[2]/div[1]/div[2]/div/div/table/tbody/tr[2]"
 
 On Error Resume Next
 Dim unlockButtonChecker As WebElement
+Dim firstLineChecker As WebElement
 Set unlockButtonChecker = driver.FindElementByXPath(imageXPath)
+Set firstLineChecker = driver.FindElementByXPath(firstlineCheckPath)
 On Error GoTo 0
 
-Set firstLineChecker = driver.FindElementByXPath("//*[@id='grid']/div[2]/div[1]/div[2]/div/div/table/tbody/tr[2]")
-
-If Not firstLineChecker Is Nothing Then
-    Select Case True
-        Case unlockButtonChecker Is Nothing
-            driver.Get loginURL
-            driver.Wait (500)
-            driver.FindElementById("login_id").SendKeys useridInput
-            driver.FindElementById("login_pass").SendKeys "testtesttest"
-            driver.FindElementByCss("#login > div.space03 > button").Click
-            driver.Wait (500)
-            driver.SwitchToAlert.Accept
-            Dim i As Integer
-            For i = 1 To 5
+Select Case True
+    Case firstLineChecker Is Nothing
+        MsgBox "ID가 존재하지 않습니다"
+    Case Else
+        Select Case True
+            Case unlockButtonChecker Is Nothing
+                driver.Get loginURL
+                driver.Wait (500)
+                driver.FindElementById("login_id").SendKeys useridInput
+                driver.FindElementById("login_pass").SendKeys "testtesttest"
                 driver.FindElementByCss("#login > div.space03 > button").Click
+                driver.Wait (500)
                 driver.SwitchToAlert.Accept
-            Next i
-            
-            driver.FindElementById("login_id").Clear
-            driver.FindElementById("login_id").SendKeys accountList.adminID
-            driver.FindElementById("login_pass").Clear
-            driver.FindElementById("login_pass").SendKeys accountList.adminPW
-            driver.FindElementByCss("#login > div.space03 > button").Click
-            driver.Wait (500)
-            driver.Get modifyURL
-            driver.Wait (500)
-            driver.FindElementByXPath("//*[@id='labelDiv']/input").SendKeys useridInput
-            driver.FindElementByXPath("//*[@id='outer_search']/div[2]/div[2]/button").Click
-            driver.Wait (500)
-            driver.FindElementByClass("btn_unlock").Click
-            driver.Wait (500)
-            driver.SwitchToAlert.Accept
-            driver.Wait (1500)
-            driver.SwitchToAlert.Accept
-            driver.FindElementByClass("btn_edit").Click
-            driver.Wait (500)
-                                                                                                            ''{PASSWORD} 변경해서 써야함
-            driver.FindElementByXPath("//*[@id='partRegi']/div[2]/table/tbody/tr[5]/td[2]/input").SendKeys "{PASSWORD}"
-            driver.FindElementByXPath("//*[@id='partRegi']/div[3]/button[1]").Click
-            driver.Wait (500)
-            driver.SwitchToAlert.Accept
-            driver.Wait (500)
-            
-        Case Else
-            driver.FindElementByClass("btn_unlock").Click
-            driver.Wait (500)
-            driver.SwitchToAlert.Accept
-            driver.Wait (1500)
-            driver.SwitchToAlert.Accept
-            driver.Wait (500)
-            driver.FindElementByClass("btn_edit").Click
-            driver.Wait (500)
-                                                                                                            ''{PASSWORD} 변경해서 써야함
-            driver.FindElementByXPath("//*[@id='partRegi']/div[2]/table/tbody/tr[5]/td[2]/input").SendKeys "{PASSWORD}"
-            driver.FindElementByXPath("//*[@id='partRegi']/div[3]/button[1]").Click
-            driver.Wait (500)
-            driver.SwitchToAlert.Accept
-    End Select
-Else
-    MsgBox "ID가 존재하지 않습니다"
-    
-End If
+                Dim i As Integer
+                For i = 1 To 5
+                    driver.FindElementByCss("#login > div.space03 > button").Click
+                    driver.SwitchToAlert.Accept
+                Next i
+                
+                driver.FindElementById("login_id").Clear
+                driver.FindElementById("login_id").SendKeys accountList.adminID
+                driver.FindElementById("login_pass").Clear
+                driver.FindElementById("login_pass").SendKeys accountList.adminPW
+                driver.FindElementByCss("#login > div.space03 > button").Click
+                driver.Wait (500)
+                driver.Get modifyURL
+                driver.Wait (500)
+                driver.FindElementByXPath("//*[@id='labelDiv']/input").SendKeys useridInput
+                driver.FindElementByXPath("//*[@id='outer_search']/div[2]/div[2]/button").Click
+                driver.Wait (500)
+                driver.FindElementByClass("btn_unlock").Click
+                driver.Wait (500)
+                driver.SwitchToAlert.Accept
+                driver.Wait (1500)
+                driver.SwitchToAlert.Accept
+                driver.FindElementByClass("btn_edit").Click
+                driver.Wait (500)
+                driver.FindElementByXPath("//*[@id='partRegi']/div[2]/table/tbody/tr[5]/td[2]/input").SendKeys "!q2w3e4r5t"
+                driver.FindElementByXPath("//*[@id='partRegi']/div[3]/button[1]").Click
+                driver.Wait (500)
+                driver.SwitchToAlert.Accept
+                driver.Wait (500)
+                
+            Case Else
+                driver.FindElementByClass("btn_unlock").Click
+                driver.Wait (500)
+                driver.SwitchToAlert.Accept
+                driver.Wait (1500)
+                driver.SwitchToAlert.Accept
+                driver.Wait (500)
+                driver.FindElementByClass("btn_edit").Click
+                driver.Wait (500)
+                driver.FindElementByXPath("//*[@id='partRegi']/div[2]/table/tbody/tr[5]/td[2]/input").SendKeys "!q2w3e4r5t"
+                driver.FindElementByXPath("//*[@id='partRegi']/div[3]/button[1]").Click
+                driver.Wait (500)
+                driver.SwitchToAlert.Accept
+        End Select
+End Select
 
 ''Case 잠금이 걸려있음
 ''잠금해제
